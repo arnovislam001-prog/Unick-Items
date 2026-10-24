@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Unick items | Online Shop</title>
+<style>
+:root{--navy:#10233f;--blue:#0877f9;--sky:#eaf5ff;--ink:#17243b;--muted:#64748b;--line:#e3eaf2;--bg:#f6f9fd;--green:#087f5b}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,Helvetica,sans-serif}
+header{background:var(--navy);color:white;position:sticky;top:0;z-index:5;box-shadow:0 4px 18px #10233f25}
+.top{max-width:1180px;margin:auto;padding:14px 20px;display:flex;align-items:center;gap:16px}
+.logo{font-size:23px;font-weight:800;white-space:nowrap}.logo span{color:#28b8ff}
+.search{flex:1;display:flex}.search input{width:100%;padding:12px 14px;border:0;border-radius:9px 0 0 9px;outline:none}.search button{border:0;background:var(--blue);color:white;padding:0 17px;border-radius:0 9px 9px 0;cursor:pointer}
+.cart-btn{background:#203955;color:white;border:1px solid #49617d;padding:11px 14px;border-radius:9px;cursor:pointer;font-weight:bold}
+nav{display:flex;justify-content:center;gap:26px;padding:0 15px 13px}nav a{color:#e8f2ff;text-decoration:none;font-size:14px}
+main{max-width:1180px;margin:22px auto;padding:0 18px}
+.hero{border-radius:18px;padding:42px 34px;background:linear-gradient(120deg,#086cf0,#25b8f0);color:white;display:flex;align-items:center;justify-content:space-between;gap:20px;overflow:hidden}
+.hero h1{font-size:clamp(30px,5vw,52px);margin:0 0 10px}.hero p{line-height:1.6;max-width:520px}.hero .tag{font-size:13px;font-weight:bold;letter-spacing:1px;text-transform:uppercase}.hero-emoji{font-size:clamp(65px,11vw,120px);filter:drop-shadow(0 8px 10px #004e8a55)}
+.primary,.secondary{border:0;border-radius:9px;padding:12px 16px;cursor:pointer;font-weight:bold}.primary{background:var(--blue);color:white}.hero .primary{background:white;color:#086cf0}.secondary{background:#edf5ff;color:#095dc4}
+.section-head{display:flex;justify-content:space-between;align-items:center;margin:28px 0 15px;gap:12px}.section-head h2{margin:0;font-size:23px}.section-head small{color:var(--muted)}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:16px}.filter{border:1px solid var(--line);background:white;color:var(--ink);padding:9px 13px;border-radius:20px;cursor:pointer}.filter.active{background:var(--navy);color:white}
+.products{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}.product{background:white;border:1px solid var(--line);border-radius:14px;overflow:hidden;box-shadow:0 3px 12px #1c35500a;display:flex;flex-direction:column}.product-art{height:155px;background:linear-gradient(145deg,#eff7ff,#dcecff);display:grid;place-items:center;font-size:72px}.product-body{padding:14px;display:flex;flex-direction:column;gap:9px;flex:1}.product h3{font-size:16px;margin:0}.desc{font-size:12px;color:var(--muted);line-height:1.4;min-height:32px}.price{font-size:19px;font-weight:800}.product .primary{width:100%;margin-top:auto}
+.perks{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:25px 0}.perk{background:white;border:1px solid var(--line);border-radius:12px;padding:16px;display:flex;gap:10px;align-items:center}.perk strong{display:block;font-size:14px}.perk small{color:var(--muted)}
+.panel{display:none;background:white;border:1px solid var(--line);border-radius:15px;padding:22px;margin:20px 0}.panel.show{display:block}.panel h2{margin-top:0}.cart-row{display:grid;grid-template-columns:1fr auto auto auto;align-items:center;gap:12px;padding:13px 0;border-bottom:1px solid var(--line)}.qty{display:flex;align-items:center;gap:8px}.qty button,.remove{border:1px solid var(--line);background:#fff;border-radius:6px;padding:5px 9px;cursor:pointer}.remove{color:#c92a2a}.totals{max-width:360px;margin:18px 0 0 auto}.total-line{display:flex;justify-content:space-between;padding:8px 0}.grand{font-weight:800;font-size:20px;border-top:1px solid var(--line);margin-top:7px;padding-top:14px}
+form{display:grid;grid-template-columns:1fr 1fr;gap:14px}label{font-size:13px;font-weight:bold;display:flex;flex-direction:column;gap:7px}input,select,textarea{font:inherit;padding:12px;border:1px solid #cdd8e5;border-radius:8px;width:100%;background:white}textarea{min-height:85px;resize:vertical}.full{grid-column:1/-1}.form-actions{display:flex;gap:10px;flex-wrap:wrap}.hint{font-size:13px;color:var(--muted);line-height:1.5}
+footer{background:var(--navy);color:#d7e5f6;margin-top:35px;padding:24px;text-align:center}footer b{color:#28b8ff}
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#10233f;color:white;padding:12px 18px;border-radius:10px;display:none;z-index:20;box-shadow:0 5px 20px #0002}
+.empty{padding:20px;text-align:center;color:var(--muted)}
+@media(max-width:850px){.products{grid-template-columns:repeat(2,minmax(0,1fr))}.top{flex-wrap:wrap}.search{order:3;flex-basis:100%}.perks{grid-template-columns:1fr}.hero{padding:30px 22px}.cart-row{grid-template-columns:1fr auto;gap:8px}.cart-row .qty,.cart-row .line-total{justify-self:start}}
+@media(max-width:520px){nav{gap:14px}.hero-emoji{display:none}main{padding:0 12px}.products{gap:10px}.product-art{height:115px;font-size:55px}.product-body{padding:10px}.product h3{font-size:14px}form{grid-template-columns:1fr}.full{grid-column:auto}.panel{padding:15px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="top">
+    <div class="logo">🛍️ Unick <span>items</span></div>
+    <div class="search"><input id="searchInput" type="search" placeholder="Search products..." aria-label="Search products"><button onclick="renderProducts()">Search</button></div>
+    <button class="cart-btn" onclick="showPanel('cartPanel')">🛒 Cart <span id="cartCount">0</span></button>
+  </div>
+  <nav><a href="#home">Home</a><a href="#shop">All Products</a><a href="#about">About</a><a href="#contact">Contact</a></nav>
+</header>
+<main>
+  <section class="hero" id="home">
+    <div><div class="tag">Welcome to our online shop</div><h1>Unick items</h1><p>Useful products, fair prices, and easy ordering. Discover something you’ll love and order from the comfort of your home.</p><button class="primary" onclick="document.getElementById('shop').scrollIntoView({behavior:'smooth'})">Shop Now →</button></div>
+    <div class="hero-emoji" aria-hidden="true">🎧 📱</div>
+  </section>
+  <div class="section-head" id="shop"><h2>🔥 Featured Products</h2><small id="productCount">Sample products</small></div>
+  <div class="filters" id="filters"></div>
+  <section class="products" id="products"></section>
+  <section class="perks" id="about">
+    <div class="perk"><span>🚚</span><div><strong>Delivery available</strong><small>Confirm delivery cost before shipping</small></div></div>
+    <div class="perk"><span>💵</span><div><strong>Cash on Delivery</strong><small>Pay when your order arrives</small></div></div>
+    <div class="perk"><span>🤝</span><div><strong>Friendly service</strong><small>Contact us with any questions</small></div></div>
+  </section>
+  <section class="panel" id="cartPanel">
+    <div class="section-head"><h2>🛒 Your Cart</h2><button class="secondary" onclick="hidePanels()">Continue Shopping</button></div>
+    <div id="cartContents"></div>
+    <div class="totals" id="cartTotals"></div>
+    <div style="margin-top:18px"><button class="primary" onclick="goCheckout()">Proceed to Order Form →</button></div>
+  </section>
+  <section class="panel" id="checkoutPanel">
+    <h2>📝 Customer Order Form</h2>
+    <p class="hint">Fill in your details carefully. This demo saves the order on this device and lets you download a copy. It does not automatically send the order to the shop owner until you connect an order service.</p>
+    <form id="orderForm">
+      <label>Full name *<input name="name" required maxlength="100" placeholder="Your full name"></label>
+      <label>Phone number *<input name="phone" required type="tel" pattern="[0-9+() -]{8,20}" placeholder="01XXXXXXXXX"></label>
+      <label class="full">Email (optional)<input name="email" type="email" placeholder="you@example.com"></label>
+      <label class="full">Delivery address *<textarea name="address" required maxlength="500" placeholder="House, road, area, district"></textarea></label>
+      <label>District *<input name="district" required placeholder="e.g. Dhaka"></label>
+      <label>Payment method<select name="payment"><option>Cash on Delivery (COD)</option><option>Pay by bKash manually (confirm with seller)</option><option>Pay by Nagad manually (confirm with seller)</option></select></label>
+      <label class="full">Order note (optional)<textarea name="note" maxlength="500" placeholder="Size, colour, delivery instructions..."></textarea></label>
+      <div class="full form-actions"><button class="primary" type="submit">Confirm Order & Download</button><button class="secondary" type="button" onclick="showPanel('cartPanel')">Back to Cart</button></div>
+    </form>
+    <div id="orderResult" aria-live="polite"></div>
+  </section>
+  <section class="panel" id="contact"><h2>Contact Unick items</h2><p class="hint">Add your real business phone number, email, and social-media links here before publishing the website.</p></section>
+</main>
+<footer>🛍️ <b>Unick items</b> · Shop Smart · Shop Easy<br><small>Demo store template — replace sample products and contact details before launch.</small></footer>
+<div class="toast" id="toast" role="status"></div>
+<script>
+const products = [
+ {id:1,name:"Wireless Headphones",category:"Electronics",price:1199,emoji:"🎧",desc:"Enjoy music, calls and everyday listening."},
+ {id:2,name:"Smart Watch",category:"Electronics",price:1499,emoji:"⌚",desc:"A stylish watch for everyday use."},
+ {id:3,name:"Everyday T-Shirt",category:"Fashion",price:399,emoji:"👕",desc:"Comfortable casual wear. Choose your size in the note."},
+ {id:4,name:"Travel Backpack",category:"Fashion",price:899,emoji:"🎒",desc:"A handy bag for study, work and travel."},
+ {id:5,name:"Phone Stand",category:"Accessories",price:249,emoji:"📱",desc:"A compact stand for your desk."},
+ {id:6,name:"Desk Lamp",category:"Home",price:699,emoji:"💡",desc:"Brighten your study or work space."},
+ {id:7,name:"Water Bottle",category:"Home",price:299,emoji:"🧴",desc:"A reusable bottle for everyday use."},
+ {id:8,name:"Sunglasses",category:"Accessories",price:499,emoji:"🕶️",desc:"A simple accessory for sunny days."}
+];
+let cart = {};
+let activeCategory = "All";
+const money = n => "৳" + Number(n).toLocaleString("en-BD");
+function toast(msg){const t=document.getElementById("toast");t.textContent=msg;t.style.display="block";setTimeout(()=>t.style.display="none",2200)}
+function renderFilters(){
+ const cats=["All",...new Set(products.map(p=>p.category))];
+ document.getElementById("filters").innerHTML=cats.map(c=>`<button class="filter ${c===activeCategory?'active':''}" onclick="setCategory(${JSON.stringify(c)})">${c}</button>`).join("");
+}
+function setCategory(c){activeCategory=c;renderFilters();renderProducts()}
+function renderProducts(){
+ const q=document.getElementById("searchInput").value.trim().toLowerCase();
+ const list=products.filter(p=>(activeCategory==="All"||p.category===activeCategory)&&(`${p.name} ${p.category} ${p.desc}`).toLowerCase().includes(q));
+ document.getElementById("productCount").textContent=`${list.length} products`;
+ document.getElementById("products").innerHTML=list.length?list.map(p=>`<article class="product"><div class="product-art">${p.emoji}</div><div class="product-body"><h3>${p.name}</h3><div class="desc">${p.desc}</div><div class="price">${money(p.price)}</div><button class="primary" onclick="addToCart(${p.id})">＋ Add to Cart</button></div></article>`).join(""):`<div class="empty">No products found. Try another search.</div>`;
+}
+function addToCart(id){cart[id]=(cart[id]||0)+1;updateCart();toast("Added to cart")}
+function changeQty(id,delta){cart[id]=(cart[id]||0)+delta;if(cart[id]<=0)delete cart[id];updateCart()}
+function removeItem(id){delete cart[id];updateCart()}
+function cartItems(){return products.filter(p=>cart[p.id])}
+function subtotal(){return cartItems().reduce((s,p)=>s+p.price*cart[p.id],0)}
+function updateCart(){
+ const count=Object.values(cart).reduce((a,b)=>a+b,0);document.getElementById("cartCount").textContent=count;
+ const items=cartItems();
+ document.getElementById("cartContents").innerHTML=items.length?items.map(p=>`<div class="cart-row"><div><strong>${p.emoji} ${p.name}</strong><br><small>${money(p.price)} each</small></div><div class="qty"><button aria-label="Decrease quantity" onclick="changeQty(${p.id},-1)">−</button><b>${cart[p.id]}</b><button aria-label="Increase quantity" onclick="changeQty(${p.id},1)">+</button></div><strong class="line-total">${money(p.price*cart[p.id])}</strong><button class="remove" onclick="removeItem(${p.id})" aria-label="Remove ${p.name}">✕</button></div>`).join(""):`<div class="empty">Your cart is empty. Add a product to get started.</div>`;
+ const sub=subtotal(),shipping=items.length?(sub>=2000?0:60):0;
+ document.getElementById("cartTotals").innerHTML=`<div class="total-line"><span>Subtotal</span><b>${money(sub)}</b></div><div class="total-line"><span>Estimated shipping</span><b>${shipping===0&&items.length?"Free":money(shipping)}</b></div><div class="total-line grand"><span>Total</span><span>${money(sub+shipping)}</span></div><small class="hint">Sample shipping rule: ৳60 under ৳2,000; free at ৳2,000 or more. Edit this rule to match your courier.</small>`;
+}
+function showPanel(id){document.querySelectorAll(".panel").forEach(p=>p.classList.remove("show"));document.getElementById(id).classList.add("show");document.getElementById(id).scrollIntoView({behavior:"smooth",block:"start"});if(id==="cartPanel")updateCart()}
+function hidePanels(){document.querySelectorAll(".panel").forEach(p=>p.classList.remove("show"))}
+function goCheckout(){if(!cartItems().length){toast("Please add a product first");return}showPanel("checkoutPanel")}
+document.getElementById("searchInput").addEventListener("input",renderProducts);
+document.getElementById("orderForm").addEventListener("submit",function(e){
+ e.preventDefault();if(!cartItems().length){toast("Your cart is empty");return}
+ const data=Object.fromEntries(new FormData(this).entries());
+ const items=cartItems().map(p=>({name:p.name,price:p.price,quantity:cart[p.id],lineTotal:p.price*cart[p.id]}));
+ const sub=subtotal(),shipping=sub>=2000?0:60;
+ const order={orderId:"UI"+Date.now().toString().slice(-8),createdAt:new Date().toLocaleString(),customer:data,items,subtotal:sub,shipping,total:sub+shipping};
+ try{const old=JSON.parse(localStorage.getItem("unickItemsOrders")||"[]");old.push(order);localStorage.setItem("unickItemsOrders",JSON.stringify(old))}catch(err){}
+ const lines=[`UNICK ITEMS ORDER`,`Order ID: ${order.orderId}`,`Date: ${order.createdAt}`,"",`Name: ${data.name}`,`Phone: ${data.phone}`,`Email: ${data.email||"-"}`,`Address: ${data.address}`,`District: ${data.district}`,`Payment: ${data.payment}`,`Note: ${data.note||"-"}`,"","ITEMS",...items.map(i=>`${i.name} x ${i.quantity} — ${money(i.lineTotal)}`),"",`Subtotal: ${money(sub)}`,`Shipping: ${money(shipping)}`,`TOTAL: ${money(order.total)}`].join("\\n");
+ const blob=new Blob([lines],{type:"text/plain;charset=utf-8"}),url=URL.createObjectURL(blob),a=document.createElement("a");a.href=url;a.download=`${order.orderId}.txt`;a.click();URL.revokeObjectURL(url);
+ document.getElementById("orderResult").innerHTML=`<div style="margin-top:18px;padding:16px;border-radius:10px;background:#e9fbf3;color:#087f5b"><strong>Order prepared successfully!</strong><br>Order ID: ${order.orderId}<br>A text copy of the order was downloaded. Important: this demo does not notify the shop owner automatically. Connect a backend or order service before accepting real orders.</div>`;
+ cart={};updateCart();this.reset();toast("Order copy downloaded");
+});
+renderFilters();renderProducts();updateCart();
+</script>
+</body>
+</html>
